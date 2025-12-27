@@ -1,524 +1,537 @@
+# Week 0: Thiết lập Môi trường DevOps với GitHub Codespaces
 
-# DevOps Learning Path - Week 0: Setup Môi Trường
+> **Thời gian**: 2-3 giờ  
+> **Mục tiêu**: Setup môi trường học tập hoàn toàn miễn phí với GitHub Codespaces
 
-## Mục Tiêu
-Trong tuần này, bạn sẽ:
-- ✅ Cài đặt và cấu hình môi trường DevOps cơ bản
-- ✅ Làm quen với Linux command line
-- ✅ Thiết lập Git và GitHub
-- ✅ Cài đặt Docker
-- ✅ Tạo dự án đầu tiên
+## 🎯 Mục tiêu Week 0
 
-## Kiến Thức Cần Có
-- Hiểu biết cơ bản về command line
-- Tài khoản GitHub (free)
+Sau khi hoàn thành Week 0, bạn sẽ:
 
----
+- ✅ Hiểu cách sử dụng GitHub Codespaces (120 giờ miễn phí/tháng)
+- ✅ Có môi trường Linux Ubuntu đầy đủ để học và thực hành
+- ✅ Cài đặt các công cụ cần thiết: Git, Docker, Python, Node.js
+- ✅ Làm quen với VS Code trong browser
+- ✅ Commit code đầu tiên lên GitHub
 
-## Bước 1: Làm Quen Với Linux Commands
+## 🚀 Tại sao dùng GitHub Codespaces?
 
-### Các lệnh cơ bản cần biết:
+### Ưu điểm
+
+1. **Miễn phí 100%**: 120 giờ/tháng cho personal accounts (~ 4 giờ/ngày)
+2. **Không cần VPS**: Không tốn tiền thuê server
+3. **Setup tự động**: Cài sẵn Docker, Python, Node.js, Git
+4. **VS Code tích hợp**: Code trực tiếp trong browser hoặc VS Code desktop
+5. **Truy cập mọi lúc**: Từ bất kỳ máy tính nào có internet
+6. **Tự động tắt**: Sau 30 phút idle → tiết kiệm giờ sử dụng
+
+### So sánh với VPS
+
+| Tiêu chí | GitHub Codespaces | VPS (AWS/GCP) |
+|----------|-------------------|---------------|
+| **Chi phí** | ✅ Miễn phí (120h/tháng) | ⚠️ $5-10/tháng (sau free trial) |
+| **Setup** | ✅ Tự động (1 phút) | ⚠️ Thủ công (30-60 phút) |
+| **Cấu hình** | ✅ 2-4 cores, 8GB RAM | ⚠️ 1 core, 1-2GB RAM (free tier) |
+| **Bảo mật** | ✅ GitHub quản lý | ⚠️ Tự hardening |
+| **IP Public** | ❌ Không có (chỉ port forwarding) | ✅ Có |
+| **Phù hợp** | Học Linux, Docker, CI/CD, scripting | Deploy app production, Kubernetes multi-node |
+
+**Kết luận**: Dùng Codespaces cho **Tháng 1-3**, sau đó chuyển sang VPS (AWS/GCP free tier) cho **Tháng 4-6** khi cần IP public và Kubernetes.
+
+## 📋 Bước 1: Tạo GitHub Account (nếu chưa có)
+
+1. Truy cập [github.com](https://github.com)
+2. Click **Sign up**
+3. Nhập:
+   - Email
+   - Password (tối thiểu 8 ký tự)
+   - Username (ví dụ: `long1712578`)
+4. Xác thực email → Hoàn tất
+
+## 📋 Bước 2: Fork/Clone Repo này
+
+### Cách 1: Fork (Khuyến nghị)
+
+1. Vào repo: [github.com/long1712578/devops-learning](https://github.com/long1712578/devops-learning)
+2. Click nút **Fork** (góc trên phải)
+3. Chọn tài khoản của bạn → **Create fork**
+
+### Cách 2: Clone
 
 ```bash
-# Xem thư mục hiện tại
-pwd
-
-# Liệt kê files
-ls -la
-
-# Di chuyển thư mục
-cd /path/to/directory
-
-# Tạo thư mục
-mkdir my-folder
-
-# Tạo file
-touch my-file.txt
-
-# Xem nội dung file
-cat my-file.txt
-
-# Sửa file (dùng nano hoặc vim)
-nano my-file.txt
-
-# Copy file
-cp source.txt destination.txt
-
-# Di chuyển/đổi tên file
-mv old-name.txt new-name.txt
-
-# Xóa file
-rm file.txt
-
-# Xóa thư mục
-rm -rf folder-name
-
-# Xem thông tin hệ thống
-uname -a
-
-# Xem processes đang chạy
-ps aux
-
-# Tìm kiếm file
-find . -name "*.txt"
-
-# Grep trong file
-grep "search-term" file.txt
+# Trên máy local (nếu đã cài Git)
+git clone https://github.com/long1712578/devops-learning.git
+cd devops-learning
 ```
 
-### 🎯 Bài Tập 1: Linux Commands Practice
+## 🚀 Bước 3: Mở GitHub Codespace
 
-Thực hiện các lệnh sau:
+### 3.1. Tạo Codespace đầu tiên
 
-```bash
-# 1. Tạo cấu trúc thư mục cho project
-mkdir -p ~/devops-practice/{app,config,scripts,logs}
+1. Vào repo vừa fork/clone trên GitHub
+2. Click nút **Code** (màu xanh)
+3. Chọn tab **Codespaces**
+4. Click **Create codespace on main**
+5. Đợi 1-2 phút → VS Code mở trong browser
 
-# 2. Tạo file README
-echo "# My DevOps Practice Project" > ~/devops-practice/README.md
+### 3.2. Làm quen với giao diện
 
-# 3. Tạo script đơn giản
-cat > ~/devops-practice/scripts/hello.sh << 'EOF'
-#!/bin/bash
-echo "Hello from DevOps!"
-date
-EOF
-
-# 4. Cấp quyền thực thi
-chmod +x ~/devops-practice/scripts/hello.sh
-
-# 5. Chạy script
-~/devops-practice/scripts/hello.sh
-
-# 6. Xem history commands
-history | tail -10
+```
+┌─────────────────────────────────────────────┐
+│  Explorer │  Search │  Git │  Extensions    │ ← Sidebar
+├─────────────────────────────────────────────┤
+│                                             │
+│           Code Editor                       │ ← Editor
+│                                             │
+├─────────────────────────────────────────────┤
+│  Terminal (bash)                            │ ← Terminal
+│  $ pwd                                      │
+│  /workspaces/devops-learning                │
+└─────────────────────────────────────────────┘
 ```
 
----
+### 3.3. Kiểm tra thông tin hệ thống
 
-## Bước 2: Git & GitHub Setup
-
-### Cài đặt Git (nếu chưa có)
+Mở terminal trong Codespace (Ctrl+` hoặc Terminal → New Terminal):
 
 ```bash
-# Kiểm tra Git đã cài chưa
+# Kiểm tra hệ điều hành
+cat /etc/os-release
+# Output: Ubuntu 20.04/22.04
+
+# Kiểm tra CPU và RAM
+lscpu | grep "Model name"
+free -h
+
+# Kiểm tra disk
+df -h
+
+# Kiểm tra user
+whoami
+# Output: codespace
+
+# Kiểm tra network
+ip addr show
+hostname -I
+```
+
+## 🛠️ Bước 4: Cài đặt và kiểm tra công cụ
+
+Codespaces có sẵn nhiều tools, nhưng hãy verify lại:
+
+### 4.1. Git
+
+```bash
 git --version
+# Output: git version 2.x.x
 
-# Nếu chưa có, cài đặt (Ubuntu/Debian)
-sudo apt update && sudo apt install git -y
+# Cấu hình Git (thay thông tin của bạn)
+git config --global user.name "Long Nguyen"
+git config --global user.email "long1712578@gmail.com"
 
-# Cấu hình Git
-git config --global user.name "Tên Của Bạn"
-git config --global user.email "email@example.com"
-
-# Xem cấu hình
+# Kiểm tra config
 git config --list
 ```
 
-### Tạo SSH Key cho GitHub
+### 4.2. Docker
 
 ```bash
-# Tạo SSH key
-ssh-keygen -t ed25519 -C "email@example.com"
-
-# Xem public key
-cat ~/.ssh/id_ed25519.pub
-
-# Copy key này và thêm vào GitHub Settings > SSH Keys
-```
-
-### 🎯 Bài Tập 2: Git Workflow Cơ Bản
-
-```bash
-# 1. Clone repository này
-cd /workspaces
-git clone <your-repo-url>
-
-# 2. Tạo branch mới
-git checkout -b feature/my-first-feature
-
-# 3. Tạo file mới
-echo "This is my first commit" > test-file.txt
-
-# 4. Staging changes
-git add test-file.txt
-
-# 5. Commit
-git commit -m "feat: add test file"
-
-# 6. Push to GitHub
-git push origin feature/my-first-feature
-
-# 7. Xem log
-git log --oneline --graph
-
-# 8. Quay về main branch
-git checkout main
-
-# 9. Pull latest changes
-git pull origin main
-```
-
----
-
-## Bước 3: Docker Setup
-
-### Kiểm tra Docker
-
-```bash
-# Kiểm tra Docker version
 docker --version
-docker compose version
+# Output: Docker version 24.x.x
 
-# Chạy container đầu tiên
+# Test Docker
 docker run hello-world
 
-# Xem images
+# Kiểm tra images
 docker images
 
-# Xem containers
+# Kiểm tra containers
 docker ps -a
 ```
 
-### 🎯 Bài Tập 3: Docker Basics
+### 4.3. Python
 
 ```bash
-# 1. Chạy Nginx container
-docker run -d --name my-nginx -p 8080:80 nginx:latest
+python3 --version
+# Output: Python 3.10.x
 
-# 2. Kiểm tra container đang chạy
+pip3 --version
+
+# Cài package thử
+pip3 install requests --user
+python3 -c "import requests; print(requests.__version__)"
+```
+
+### 4.4. Node.js & npm
+
+```bash
+node --version
+# Output: v18.x.x
+
+npm --version
+
+# Cài package thử
+npm install -g tldr
+tldr ls
+```
+
+### 4.5. Các tools khác
+
+```bash
+# Kiểm tra các tools có sẵn
+which curl wget git vim nano htop tree jq
+
+# Cài thêm tools hữu ích
+sudo apt update
+sudo apt install -y \
+    net-tools \
+    dnsutils \
+    iputils-ping \
+    telnet \
+    htop \
+    tree \
+    ncdu \
+    tmux
+
+# Test
+htop  # Ctrl+C để thoát
+tree -L 2
+```
+
+## 📝 Bước 5: Thực hành Linux cơ bản
+
+Chạy các lệnh sau để làm quen với Linux:
+
+```bash
+# 1. Navigation
+pwd                    # Print working directory
+ls -la                 # List all files
+cd ~                   # Go to home
+cd -                   # Go back
+
+# 2. Tạo và xóa files/folders
+mkdir -p test/subfolder
+cd test
+touch file1.txt file2.txt
+echo "Hello DevOps" > file1.txt
+cat file1.txt
+cp file1.txt file1_backup.txt
+mv file2.txt renamed.txt
+rm renamed.txt
+cd ..
+rm -rf test
+
+# 3. Permissions
+touch myfile.sh
+chmod +x myfile.sh
+ls -l myfile.sh
+# Output: -rwxr-xr-x
+
+# 4. Search
+find . -name "*.md"
+grep -r "DevOps" .
+
+# 5. Process
+ps aux | grep bash
+top  # Press 'q' to quit
+
+# 6. Network
+curl -I https://github.com
+ping -c 3 google.com
+```
+
+## 🐳 Bước 6: Thực hành Docker đầu tiên
+
+### 6.1. Chạy container đơn giản
+
+```bash
+# Pull và run Nginx
+docker run -d -p 8080:80 --name my-nginx nginx:alpine
+
+# Kiểm tra container đang chạy
 docker ps
 
-# 3. Xem logs
+# Test web server
+curl localhost:8080
+# Output: HTML của Nginx welcome page
+
+# Xem logs
 docker logs my-nginx
 
-# 4. Truy cập container
-docker exec -it my-nginx bash
-
-# Trong container:
-ls /usr/share/nginx/html/
-cat /usr/share/nginx/html/index.html
+# Vào trong container
+docker exec -it my-nginx sh
+# Bên trong container:
+ls -la /usr/share/nginx/html/
 exit
 
-# 5. Stop và remove container
+# Dừng và xóa container
 docker stop my-nginx
 docker rm my-nginx
-
-# 6. Cleanup
-docker system prune -a
 ```
 
----
-
-## Bước 4: Tạo Project Đầu Tiên
-
-### 🎯 Bài Tập 4: Simple Web App với Docker
-
-Tạo một ứng dụng web đơn giản và chạy trong Docker.
-
-#### 1. Tạo cấu trúc project
+### 6.2. Tạo Dockerfile đầu tiên
 
 ```bash
-cd /workspaces/devops-learning
-mkdir -p simple-webapp/{app,docker}
-cd simple-webapp
-```
+# Tạo folder cho project
+mkdir -p projects/hello-docker
+cd projects/hello-docker
 
-#### 2. Tạo file HTML đơn giản
-
-```bash
-cat > app/index.html << 'EOF'
+# Tạo file HTML
+cat > index.html << 'EOF'
 <!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Learning</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-        h1 { font-size: 3em; margin-bottom: 20px; }
-        .info { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; }
-    </style>
-</head>
+<html>
+<head><title>DevOps Learning</title></head>
 <body>
-    <h1>🚀 DevOps Learning Journey</h1>
-    <div class="info">
-        <h2>Week 0 Completed!</h2>
-        <p>Bạn đã hoàn thành setup môi trường DevOps cơ bản</p>
-        <p>Hostname: <span id="hostname"></span></p>
-        <p>Time: <span id="time"></span></p>
-    </div>
-    <script>
-        document.getElementById('time').textContent = new Date().toLocaleString();
-        fetch('/hostname.txt').then(r => r.text()).then(h => {
-            document.getElementById('hostname').textContent = h;
-        }).catch(() => {
-            document.getElementById('hostname').textContent = 'Docker Container';
-        });
-    </script>
+  <h1>Hello from Docker! 🐳</h1>
+  <p>This is my first containerized app.</p>
 </body>
 </html>
 EOF
-```
 
-#### 3. Tạo Dockerfile
-
-```bash
+# Tạo Dockerfile
 cat > Dockerfile << 'EOF'
 FROM nginx:alpine
-
-# Copy HTML files
-COPY app/ /usr/share/nginx/html/
-
-# Add hostname info
-RUN echo "$(hostname)" > /usr/share/nginx/html/hostname.txt
-
-# Expose port
+COPY index.html /usr/share/nginx/html/
 EXPOSE 80
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
 EOF
+
+# Build image
+docker build -t hello-devops:v1 .
+
+# Run container
+docker run -d -p 8081:80 --name hello-app hello-devops:v1
+
+# Test
+curl localhost:8081
 ```
 
-#### 4. Tạo docker-compose.yml
+### 6.3. Port Forwarding trong Codespaces
+
+Codespaces tự động detect ports và forward chúng. Kiểm tra:
+
+1. Vào tab **PORTS** ở panel dưới VS Code
+2. Thấy port 8081 → Click **Open in Browser**
+3. Trình duyệt mới mở → Thấy trang HTML của bạn!
+
+## 📦 Bước 7: Commit code đầu tiên
 
 ```bash
-cat > docker-compose.yml << 'EOF'
+# Về root của repo
+cd /workspaces/devops-learning
+
+# Kiểm tra status
+git status
+
+# Add files mới
+git add .
+
+# Commit
+git commit -m "feat: add hello-docker project and update week0 setup"
+
+# Push lên GitHub
+git push origin main
+
+# Nếu gặp lỗi authentication, dùng GitHub CLI
+gh auth login
+# Chọn: GitHub.com → HTTPS → Yes (git protocol) → Login with browser
+```
+
+## 🎯 Bước 8: Bài tập thực hành
+
+### Challenge 1: Linux Explorer
+
+Tạo script `system-info.sh` để hiển thị thông tin hệ thống:
+
+```bash
+#!/bin/bash
+# File: system-info.sh
+
+echo "=== System Information ==="
+echo "OS: $(cat /etc/os-release | grep PRETTY_NAME | cut -d= -f2)"
+echo "Kernel: $(uname -r)"
+echo "Uptime: $(uptime -p)"
+echo "Memory: $(free -h | awk '/^Mem:/ {print $3 "/" $2}')"
+echo "Disk: $(df -h / | awk 'NR==2 {print $3 "/" $2 " (" $5 ")"}')"
+echo "Current User: $(whoami)"
+echo "Current Directory: $(pwd)"
+```
+
+Chạy script:
+
+```bash
+chmod +x system-info.sh
+./system-info.sh
+```
+
+### Challenge 2: Docker Compose
+
+Tạo file `docker-compose.yml`:
+
+```yaml
 version: '3.8'
 
 services:
   web:
-    build: .
-    container_name: devops-webapp
+    image: nginx:alpine
     ports:
       - "8080:80"
-    restart: unless-stopped
-    labels:
-      - "devops.learning=week0"
-EOF
+    volumes:
+      - ./html:/usr/share/nginx/html
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: devops123
+      POSTGRES_DB: learning
+    ports:
+      - "5432:5432"
 ```
 
-#### 5. Build và chạy
+Chạy:
 
 ```bash
-# Build image
-docker compose build
+mkdir html
+echo "<h1>Docker Compose Works!</h1>" > html/index.html
 
-# Chạy container
-docker compose up -d
+docker-compose up -d
+docker-compose ps
+curl localhost:8080
 
-# Xem logs
-docker compose logs -f
-
-# Kiểm tra: Mở browser và truy cập http://localhost:8080
+# Stop
+docker-compose down
 ```
 
-#### 6. Cleanup
+### Challenge 3: Git Branching
 
 ```bash
-# Stop containers
-docker compose down
+# Tạo branch mới
+git checkout -b feature/my-first-feature
 
-# Remove images
-docker compose down --rmi all
+# Tạo file mới
+echo "# My Notes" > notes.md
+git add notes.md
+git commit -m "docs: add personal notes"
+
+# Push branch
+git push origin feature/my-first-feature
+
+# Về main
+git checkout main
+
+# Merge (sau khi tạo PR trên GitHub)
+git pull origin main
 ```
 
----
+## ✅ Checklist hoàn thành Week 0
 
-## Bước 5: Tạo Script Automation
+Copy checklist này vào file `week0-checklist.md`:
 
-### 🎯 Bài Tập 5: DevOps Automation Script
+- [ ] Tạo GitHub account
+- [ ] Fork/clone repo `devops-learning`
+- [ ] Mở GitHub Codespace thành công
+- [ ] Verify Git, Docker, Python, Node.js
+- [ ] Cài thêm tools: htop, tree, tmux
+- [ ] Thực hành 20+ lệnh Linux cơ bản
+- [ ] Chạy container Nginx đầu tiên
+- [ ] Build Dockerfile và tạo custom image
+- [ ] Test port forwarding trong Codespaces
+- [ ] Commit và push code lên GitHub
+- [ ] Hoàn thành 3 challenges
+- [ ] Tạo branch và merge vào main
 
-Tạo script để tự động hóa các tác vụ thường dùng.
+## 📊 Theo dõi usage Codespaces
+
+Kiểm tra số giờ đã dùng:
+
+1. Vào [github.com/settings/billing](https://github.com/settings/billing)
+2. Mục **Codespaces** → Xem usage
+3. Free tier: **120 core-hours/month**
+
+**Tips tiết kiệm giờ**:
+
+- ✅ Codespace tự tắt sau 30 phút idle
+- ✅ Dừng manually: Codespaces menu → Stop codespace
+- ✅ Xóa codespace không dùng: Delete codespace
+- ✅ Commit code thường xuyên để không mất khi tạo codespace mới
+
+## 🔥 Tips nâng cao
+
+### 1. Dùng Codespaces từ VS Code Desktop
 
 ```bash
-cat > devops-helper.sh << 'EOF'
-#!/bin/bash
-
-# DevOps Helper Script
-# Mục đích: Tự động hóa các tác vụ DevOps thường dùng
-
-set -e  # Exit on error
-
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-
-# Functions
-print_success() {
-    echo -e "${GREEN}✓ $1${NC}"
-}
-
-print_error() {
-    echo -e "${RED}✗ $1${NC}"
-}
-
-print_info() {
-    echo -e "${YELLOW}ℹ $1${NC}"
-}
-
-# Check Docker
-check_docker() {
-    print_info "Checking Docker..."
-    if command -v docker &> /dev/null; then
-        print_success "Docker is installed: $(docker --version)"
-    else
-        print_error "Docker is not installed"
-        exit 1
-    fi
-}
-
-# Check Git
-check_git() {
-    print_info "Checking Git..."
-    if command -v git &> /dev/null; then
-        print_success "Git is installed: $(git --version)"
-        print_info "Git user: $(git config user.name) <$(git config user.email)>"
-    else
-        print_error "Git is not installed"
-        exit 1
-    fi
-}
-
-# System info
-show_system_info() {
-    print_info "System Information:"
-    echo "OS: $(uname -s)"
-    echo "Kernel: $(uname -r)"
-    echo "Hostname: $(hostname)"
-    echo "Current User: $(whoami)"
-    echo "Current Directory: $(pwd)"
-    echo "Disk Usage:"
-    df -h | grep -E '^/dev/'
-}
-
-# Docker cleanup
-docker_cleanup() {
-    print_info "Cleaning up Docker..."
-    docker system prune -af --volumes
-    print_success "Docker cleanup completed"
-}
-
-# Main menu
-show_menu() {
-    echo ""
-    echo "======================================"
-    echo "   DevOps Helper Script"
-    echo "======================================"
-    echo "1. Check Docker"
-    echo "2. Check Git"
-    echo "3. Show System Info"
-    echo "4. Docker Cleanup"
-    echo "5. Run All Checks"
-    echo "0. Exit"
-    echo "======================================"
-}
-
-# Main logic
-main() {
-    while true; do
-        show_menu
-        read -p "Select option: " choice
-        case $choice in
-            1) check_docker ;;
-            2) check_git ;;
-            3) show_system_info ;;
-            4) docker_cleanup ;;
-            5) 
-                check_docker
-                check_git
-                show_system_info
-                ;;
-            0) 
-                print_info "Goodbye!"
-                exit 0
-                ;;
-            *) 
-                print_error "Invalid option"
-                ;;
-        esac
-        echo ""
-        read -p "Press Enter to continue..."
-    done
-}
-
-main
-EOF
-
-chmod +x devops-helper.sh
+# Cài extension "GitHub Codespaces" trong VS Code desktop
+# Ctrl+Shift+P → "Codespaces: Connect to Codespace"
+# Chọn codespace đang chạy → VS Code local connect vào
 ```
 
----
+### 2. Dotfiles tự động
 
-## Kiểm Tra Hoàn Thành Week 0
+Tạo repo `dotfiles` trên GitHub với:
 
-### ✅ Checklist
+```bash
+# ~/.bashrc hoặc ~/.zshrc
+alias ll='ls -alh'
+alias gs='git status'
+alias gp='git pull'
 
-Đánh dấu các mục bạn đã hoàn thành:
+export PS1='\u@\h:\w\$ '
+```
 
-- [ ] Thực hiện được các lệnh Linux cơ bản
-- [ ] Cấu hình Git và tạo SSH key cho GitHub
-- [ ] Chạy được Docker container đầu tiên
-- [ ] Tạo và build được Dockerfile
-- [ ] Sử dụng Docker Compose
-- [ ] Tạo được automation script
-- [ ] Hiểu workflow cơ bản: Code → Build → Run
+Settings → Codespaces → Dotfiles repo → Chọn repo `dotfiles`
 
-### 📝 Bài Tập Tổng Hợp
+### 3. Prebuilds (Nâng cao)
 
-Thử thách cuối tuần:
+Nếu bạn là owner của repo, tạo `.devcontainer/devcontainer.json` để prebuild:
 
-1. **Tạo một Git repository mới**
-2. **Tạo ứng dụng web với 3 pages** (Home, About, Contact)
-3. **Viết Dockerfile** để containerize ứng dụng
-4. **Tạo docker-compose.yml** để chạy nhiều services
-5. **Viết script** để automate build và deploy
-6. **Push code lên GitHub**
+```json
+{
+  "name": "DevOps Learning",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "docker-in-docker": "latest",
+    "python": "3.11",
+    "node": "18"
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh"
+}
+```
 
----
+## 🆘 Troubleshooting
 
-## Tài Liệu Tham Khảo
+### Codespace không start
 
-### Linux
-- [Linux Command Line Basics](https://ubuntu.com/tutorials/command-line-for-beginners)
+- **Lỗi**: "Failed to create codespace"
+- **Giải pháp**: Đợi vài phút hoặc chọn region khác (US East/West)
+
+### Docker không chạy
+
+```bash
+# Kiểm tra Docker daemon
+sudo systemctl status docker
+
+# Restart Docker
+sudo systemctl restart docker
+```
+
+### Hết quota 120 giờ
+
+- **Giải pháp 1**: Đợi đầu tháng sau
+- **Giải pháp 2**: Đăng ký AWS/GCP free tier
+- **Giải pháp 3**: Upgrade GitHub Pro ($4/month → 180 giờ)
+
+## 🎯 Bước tiếp theo
+
+Sau khi hoàn thành Week 0, chuyển sang:
+
+👉 **[Week 1-2: Linux Fundamentals](./week1-2-linux/README.md)**
+
+## 📚 Tài liệu tham khảo
+
+- [GitHub Codespaces Docs](https://docs.github.com/en/codespaces)
+- [Docker Get Started](https://docs.docker.com/get-started/)
 - [Linux Journey](https://linuxjourney.com/)
 
-### Git
-- [Git Documentation](https://git-scm.com/doc)
-- [GitHub Guides](https://guides.github.com/)
-
-### Docker
-- [Docker Documentation](https://docs.docker.com/)
-- [Docker Getting Started](https://docs.docker.com/get-started/)
-
 ---
 
-## Tiếp Theo
+**Chúc mừng! Bạn đã hoàn thành Week 0! 🎉**
 
-Sau khi hoàn thành Week 0, bạn sẽ chuyển sang:
-- **Week 1**: Git Advanced & Branching Strategies
-- **Week 2**: Docker Deep Dive & Multi-stage Builds
-- **Week 3**: CI/CD với GitHub Actions
-- **Week 4**: Infrastructure as Code (Terraform)
-
----
-
-## Ghi Chú
-
-- Thực hành mỗi ngày ít nhất 30 phút
-- Ghi chép lại các lỗi gặp phải và cách giải quyết
-- Tham gia communities: DevOps Vietnam, Docker Vietnam
-- Đặt câu hỏi khi gặp khó khăn
-
-**Chúc bạn học tốt! 🚀**
+Bây giờ bạn có một môi trường DevOps đầy đủ để học và thực hành. Hãy commit progress và chuyển sang Week 1!
