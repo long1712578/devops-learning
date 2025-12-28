@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: devops123
+      POSTGRES_DB: learning
+    ports:
+      - "5432:5432"
